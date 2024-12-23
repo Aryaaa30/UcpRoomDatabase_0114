@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -18,6 +19,34 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.FormErrorStateMataKuliah
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.MataKuliahEvent
+import com.example.session11_ucp2.ui.viewmodel.matakuliah.MataKuliahUIState
+
+@Composable
+fun InsertBodyMataKuliah(
+    modifier: Modifier = Modifier,
+    onValueChange: (MataKuliahEvent) -> Unit,
+    uiState: MataKuliahUIState,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FormMataKuliah(
+            mataKuliahEvent = uiState.mataKuliahEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Simpan")
+        }
+    }
+}
 
 @Composable
 fun FormMataKuliah(
