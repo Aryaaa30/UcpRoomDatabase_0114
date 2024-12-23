@@ -1,6 +1,5 @@
 package com.example.session11_ucp2.ui.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,7 +17,6 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MenuView(
-    onMahasiswaClick: () -> Unit,
     onDosenClick: () -> Unit,
     onMataKuliahClick: () -> Unit
 ) {
@@ -33,7 +31,6 @@ fun MenuView(
         Spacer(modifier = Modifier.height(24.dp))
 
         // Logo dan Header
-
         Text(
             text = "Hallo",
             fontSize = 24.sp,
@@ -51,8 +48,6 @@ fun MenuView(
         Spacer(modifier = Modifier.height(32.dp))
 
         // Menu
-        MenuButton(text = "Mahasiswa", color = Color(0xFF87CEEB), onClick = onMahasiswaClick)
-        Spacer(modifier = Modifier.height(16.dp))
         MenuButton(text = "Dosen", color = Color(0xFF6A5ACD), onClick = onDosenClick)
         Spacer(modifier = Modifier.height(16.dp))
         MenuButton(text = "Mata Kuliah", color = Color(0xFFFFD700), onClick = onMataKuliahClick)
@@ -77,4 +72,3 @@ fun MenuButton(text: String, color: Color, onClick: () -> Unit) {
         }
     }
 }
-

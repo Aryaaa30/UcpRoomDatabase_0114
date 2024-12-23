@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.session11_ucp2.ui.view.MenuView
+import com.example.session11_ucp2.ui.view.dosen.CreateDosenView
 
 enum class Halaman{
     Menu,
@@ -29,9 +30,15 @@ fun PengelolaHalaman(
         // MenuView
         composable(route = Halaman.Menu.name) {
             MenuView(
-                onMahasiswaClick = { navController.navigate(Halaman.CreateDosen.name) },
                 onDosenClick = { navController.navigate(Halaman.ListDosen.name) },
                 onMataKuliahClick = { navController.navigate(Halaman.ListMataKuliah.name) }
+            )
+        }
+        // Tambah Dosen
+        composable(route = DestinasiCreateDosen.route) {
+            CreateDosenView(
+                onBack = { navController.popBackStack() },
+                onNavigate = { navController.popBackStack() }
             )
         }
     }
