@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.session11_ucp2.ui.navigation.AlamatNavigasi
 import com.example.session11_ucp2.ui.viewmodel.dosen.CreateDosenViewModel
 import com.example.session11_ucp2.ui.viewmodel.dosen.DosenEvent
+import com.example.session11_ucp2.ui.viewmodel.dosen.DosenUIState
 import com.example.session11_ucp2.ui.viewmodel.dosen.FormErrorStateDosen
 
 object DestinasiCreateDosen : AlamatNavigasi {
@@ -34,6 +36,33 @@ fun CreateDosenView(
     //viewModel: CreateDosenViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ){
 
+}
+
+@Composable
+fun InsertBodyDosen(
+    modifier: Modifier = Modifier,
+    onValueChange: (DosenEvent) -> Unit,
+    uiState: DosenUIState,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FormDosen(
+            dosenEvent = uiState.dosenEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Simpan")
+        }
+    }
 }
 
 @Composable
