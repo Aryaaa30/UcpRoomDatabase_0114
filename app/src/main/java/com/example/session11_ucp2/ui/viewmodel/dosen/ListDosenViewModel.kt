@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.session11_ucp2.repository.RepositoryDosen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ListDosenViewModel(private val repository: RepositoryDosen) : ViewModel() {
@@ -14,10 +15,10 @@ class ListDosenViewModel(private val repository: RepositoryDosen) : ViewModel() 
 
     init {
         viewModelScope.launch {
-            val dosenList = repository.getAllDosen()
-            _listDosen.value = dosenList
+            // Mengumpulkan data dari Flow dan menetapkannya ke _listDosen
+            repository.getAllDosen().collect { dosenList ->
+                _listDosen.value = dosenList
+            }
         }
     }
 }
-
-
