@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.session11_ucp2.repository.RepositoryDosen
 import kotlinx.coroutines.launch
 
-class DosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel(){
+class CreateDosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel(){
     var uiState by mutableStateOf(DosenUIState())
 
     fun updateState(dosenEvent: DosenEvent) {
