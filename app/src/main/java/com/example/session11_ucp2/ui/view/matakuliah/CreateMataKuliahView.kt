@@ -27,12 +27,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.monitoringapplication.ui.costumwidget.CostumTopAppBar
+import com.example.session11_ucp2.ui.navigation.AlamatNavigasi
 import com.example.session11_ucp2.ui.viewmodel.dosen.PenyediaViewModel
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.CreateMataKuliahViewModel
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.FormErrorStateMataKuliah
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.MataKuliahEvent
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.MataKuliahUIState
 import kotlinx.coroutines.launch
+
+object DestinasiCreateMataKuliah : AlamatNavigasi {
+    override val route: String = "create_matakuliah"
+}
 
 @Composable
 fun CreateMataKuliahView(
