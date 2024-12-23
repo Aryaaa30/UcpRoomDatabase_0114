@@ -1,3 +1,5 @@
+package com.example.session11_ucp2.data.entity
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -8,4 +10,3 @@ data class Dosen(
     val nama: String,
     val jenisKelamin: String
 )
-

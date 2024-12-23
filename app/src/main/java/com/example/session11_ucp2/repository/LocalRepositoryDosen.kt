@@ -1,7 +1,7 @@
 package com.example.session11_ucp2.repository
 
-import Dosen
-import DosenDao
+import com.example.session11_ucp2.data.entity.Dosen
+import com.example.session11_ucp2.data.dao.DosenDao
 import kotlinx.coroutines.flow.Flow
 
 class LocalRepositoryDosen(private val dosenDao: DosenDao) : RepositoryDosen {

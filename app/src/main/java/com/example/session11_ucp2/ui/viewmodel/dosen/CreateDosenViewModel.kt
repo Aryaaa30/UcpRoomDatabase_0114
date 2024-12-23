@@ -1,11 +1,11 @@
 package com.example.session11_ucp2.ui.viewmodel.dosen
 
-import Dosen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.session11_ucp2.data.entity.Dosen
 import com.example.session11_ucp2.repository.RepositoryDosen
 import kotlinx.coroutines.launch
 

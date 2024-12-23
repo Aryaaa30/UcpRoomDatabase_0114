@@ -1,8 +1,8 @@
 package com.example.session11_ucp2.ui.viewmodel.dosen
 
-import Dosen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.session11_ucp2.data.entity.Dosen
 import com.example.session11_ucp2.repository.RepositoryDosen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,6 +1,6 @@
 package com.example.session11_ucp2.repository
 
-import MataKuliah
+import com.example.session11_ucp2.data.entity.MataKuliah
 import kotlinx.coroutines.flow.Flow
 
 interface RepositoryMataKuliah {

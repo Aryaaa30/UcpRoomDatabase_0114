@@ -1,8 +1,8 @@
 package com.example.session11_ucp2.ui.viewmodel.matakuliah
 
-import MataKuliah
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.session11_ucp2.data.entity.MataKuliah
 import com.example.session11_ucp2.repository.RepositoryMataKuliah
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

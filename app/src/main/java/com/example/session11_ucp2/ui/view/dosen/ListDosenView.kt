@@ -1,6 +1,5 @@
 package com.example.session11_ucp2.ui.view.dosen
 
-import Dosen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,7 @@ import com.example.session11_ucp2.ui.viewmodel.dosen.ListDosenViewModel
 import com.example.session11_ucp2.ui.viewmodel.dosen.PenyediaViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.lazy.items
+import com.example.session11_ucp2.data.entity.Dosen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

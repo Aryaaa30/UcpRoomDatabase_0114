@@ -1,13 +1,14 @@
 package com.example.session10_roomlocaldbpart1.data.database
 
-import Dosen
-import DosenDao
-import MataKuliah
-import MataKuliahDao
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.session11_ucp2.data.entity.Dosen
+import com.example.session11_ucp2.data.dao.DosenDao
+import com.example.session11_ucp2.data.dao.MataKuliahDao
+import com.example.session11_ucp2.data.entity.MataKuliah
+
 
 @Database(
     entities = [Dosen::class, MataKuliah::class], version = 1, exportSchema = false)

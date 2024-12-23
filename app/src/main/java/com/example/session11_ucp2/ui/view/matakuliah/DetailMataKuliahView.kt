@@ -1,6 +1,5 @@
 package com.example.session11_ucp2.ui.view.matakuliah
 
-import MataKuliah
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.session11_ucp2.data.entity.MataKuliah
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.DetailMataKuliahViewModel
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.DetailMataKuliahUiState
 import com.example.session11_ucp2.ui.viewmodel.matakuliah.MataKuliahEvent

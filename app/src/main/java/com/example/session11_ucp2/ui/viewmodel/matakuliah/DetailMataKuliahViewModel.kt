@@ -1,9 +1,9 @@
 package com.example.session11_ucp2.ui.viewmodel.matakuliah
 
-import MataKuliah
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.session11_ucp2.data.entity.MataKuliah
 import com.example.session11_ucp2.repository.RepositoryMataKuliah
 import com.example.session11_ucp2.ui.navigation.DestinasiDetailMataKuliah
 import kotlinx.coroutines.delay
@@ -24,9 +24,9 @@ class DetailMataKuliahViewModel(
 
     val detailUiState: StateFlow<DetailMataKuliahUiState> = repositoryMataKuliah.getDetailMataKuliah(_kodeMataKuliah)
         .filterNotNull()
-        .map {
+        .map { mataKuliah ->
             DetailMataKuliahUiState(
-                detailUiEvent = it.toDetailUiEvent(),
+                detailUiEvent = mataKuliah.toDetailUiEvent(),
                 isLoading = false,
             )
         }
@@ -34,12 +34,12 @@ class DetailMataKuliahViewModel(
             emit(DetailMataKuliahUiState(isLoading = true))
             delay(600)
         }
-        .catch {
+        .catch { exception ->
             emit(
                 DetailMataKuliahUiState(
                     isLoading = false,
                     isError = true,
-                    errorMessage = it.message ?: "Terjadi kesalahan",
+                    errorMessage = exception.message ?: "Terjadi kesalahan",
                 )
             )
         }
@@ -52,10 +52,9 @@ class DetailMataKuliahViewModel(
         )
 
     fun deleteMataKuliah() {
-        detailUiState.value.detailUiEvent.toMataKuliahEntity().let {
-            viewModelScope.launch {
-                repositoryMataKuliah.deleteMataKuliah(it)
-            }
+        val mataKuliahEntity = detailUiState.value.detailUiEvent.toMataKuliahEntity()
+        viewModelScope.launch {
+            repositoryMataKuliah.deleteMataKuliah(mataKuliahEntity)
         }
     }
 }
@@ -73,11 +72,7 @@ data class DetailMataKuliahUiState(
         get() = detailUiEvent != MataKuliahEvent()
 }
 
-/*
- * Data class untuk menampung data yang akan ditampilkan di UI
- */
-
-// memindahkan data dari entity ke ui
+// Memindahkan data dari entity ke UI
 fun MataKuliah.toDetailUiEvent(): MataKuliahEvent {
     return MataKuliahEvent(
         kode = kode,

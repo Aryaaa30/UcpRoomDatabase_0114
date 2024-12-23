@@ -1,7 +1,7 @@
 package com.example.session11_ucp2.repository
 
-import MataKuliah
-import MataKuliahDao
+import com.example.session11_ucp2.data.dao.MataKuliahDao
+import com.example.session11_ucp2.data.entity.MataKuliah
 import kotlinx.coroutines.flow.Flow
 
 class LocalRepositoryMataKuliah(private val mataKuliahDao: MataKuliahDao) : RepositoryMataKuliah {
