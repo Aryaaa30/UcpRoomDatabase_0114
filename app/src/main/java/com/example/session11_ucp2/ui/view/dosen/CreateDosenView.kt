@@ -1,25 +1,9 @@
 package com.example.session11_ucp2.ui.view.dosen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,14 +26,15 @@ object DestinasiCreateDosen : AlamatNavigasi {
 @Composable
 fun CreateDosenView(
     onBack: () -> Unit,
-    onNavigate: () -> Unit,
+    onNavigate: () -> Unit, // Navigasi ke halaman ListDosen setelah sukses
     modifier: Modifier = Modifier,
     viewModel: CreateDosenViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val uiState = viewModel.uiState
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
+    // Memantau pesan Snackbar dari ViewModel
     LaunchedEffect(uiState.snackBarMessage) {
         uiState.snackBarMessage?.let { message ->
             coroutineScope.launch {
@@ -76,14 +61,11 @@ fun CreateDosenView(
             )
             InsertBodyDosen(
                 uiState = uiState,
-                onValueChange = { updatedEvent ->
-                    viewModel.updateState(updatedEvent)
-                },
+                onValueChange = { updatedEvent -> viewModel.updateState(updatedEvent) },
                 onClick = {
-                    coroutineScope.launch {
-                        viewModel.saveData()
-                    }
-                    onNavigate()
+                    viewModel.saveData(onSuccess = {
+                        onNavigate() // Navigasi ke halaman ListDosen setelah sukses
+                    })
                 }
             )
         }
@@ -95,7 +77,7 @@ fun InsertBodyDosen(
     modifier: Modifier = Modifier,
     onValueChange: (DosenEvent) -> Unit,
     uiState: DosenUIState,
-    onClick: () -> Unit
+    onClick: () -> Unit // Properti ini hanya akan menangani aksi simpan
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -109,7 +91,7 @@ fun InsertBodyDosen(
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = onClick,
+            onClick = onClick, // Panggilan onClick langsung
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Simpan")
@@ -137,13 +119,16 @@ fun FormDosen(
                 onValueChange(dosenEvent.copy(nama = it))
             },
             label = { Text("Nama") },
-            isError = errorState.nama != null,
+            isError = errorState.nama != null, // Tampilkan error jika tidak valid
             placeholder = { Text("Masukkan Nama") },
         )
-        Text(
-            text = errorState.nama ?: "",
-            color = Color.Red
-        )
+        if (errorState.nama != null) {
+            Text(
+                text = errorState.nama,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // NIDN
         OutlinedTextField(
@@ -153,14 +138,17 @@ fun FormDosen(
                 onValueChange(dosenEvent.copy(nidn = it))
             },
             label = { Text("NIDN") },
-            isError = errorState.nidn != null,
+            isError = errorState.nidn != null, // Tampilkan error jika tidak valid
             placeholder = { Text("Masukkan NIDN") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Text(
-            text = errorState.nidn ?: "",
-            color = Color.Red
-        )
+        if (errorState.nidn != null) {
+            Text(
+                text = errorState.nidn,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // Jenis Kelamin
         Spacer(modifier = Modifier.height(16.dp))
@@ -185,9 +173,12 @@ fun FormDosen(
                 }
             }
         }
-        Text(
-            text = errorState.jenisKelamin ?: "",
-            color = Color.Red
-        )
+        if (errorState.jenisKelamin != null) {
+            Text(
+                text = errorState.jenisKelamin,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
     }
 }

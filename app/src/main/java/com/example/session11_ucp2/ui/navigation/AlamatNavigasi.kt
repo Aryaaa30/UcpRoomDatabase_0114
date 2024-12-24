@@ -4,21 +4,34 @@ interface AlamatNavigasi {
     val route: String
 }
 
+object DestinasiHome {
+    const val route = "home"
+}
+
+object DestinasiListDosen : AlamatNavigasi {
+    override val route: String = "list_dosen"
+}
+
 object DestinasiCreateDosen : AlamatNavigasi {
     override val route: String = "create_dosen"
 }
 
-object DestinasiCreateMataKuliah : AlamatNavigasi {
-    override val route: String = "create_mata_kuliah"
+object DestinasiCreateMataKuliah {
+    const val route = "create_matakuliah"
 }
 
-object DestinasiEdit : AlamatNavigasi {
-    const val KODE_MATA_KULIAH = "kode_mata_kuliah"
-    override val route: String = "edit_mata_kuliah/{$KODE_MATA_KULIAH}"
+object DestinasiDetailMataKuliah {
+    const val KODE_MATA_KULIAH = "kodeMataKuliah"
+    const val route = "detail_matakuliah/{$KODE_MATA_KULIAH}"
+    val routeWithArgs: (String) -> String = { kode ->
+        "detail_matakuliah/$kode"
+    }
 }
 
-object DestinasiDetailMataKuliah : AlamatNavigasi {
-    const val KODE_MATA_KULIAH = "kode_mata_kuliah"
-    override val route: String = "detail_mata_kuliah/{$KODE_MATA_KULIAH}"
+object DestinasiEdit {
+    const val KODE_MATA_KULIAH = "kodeMataKuliah"
+    const val route = "edit_matakuliah/{$KODE_MATA_KULIAH}"
+    val routeWithArgs: (String) -> String = { kode ->
+        "edit_matakuliah/$kode"
+    }
 }
-

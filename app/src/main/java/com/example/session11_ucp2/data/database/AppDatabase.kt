@@ -9,26 +9,37 @@ import com.example.session11_ucp2.data.dao.DosenDao
 import com.example.session11_ucp2.data.dao.MataKuliahDao
 import com.example.session11_ucp2.data.entity.MataKuliah
 
-
+// Definisi Database Room
 @Database(
-    entities = [Dosen::class, MataKuliah::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase(){ // Mendefiniskan Fungsi untuk mengakses data mahasiswa
+    entities = [Dosen::class, MataKuliah::class], // Entitas dalam database
+    version = 1, // Versi database
+    exportSchema = false // Jangan ekspor skema
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    // DAO untuk mengakses tabel Dosen
     abstract fun dosenDao(): DosenDao
+
+    // DAO untuk mengakses tabel MataKuliah
     abstract fun mataKuliahDao(): MataKuliahDao
 
-    companion object{
-        @Volatile //Memastikan bahwa nilai variable instance selalu sama di se
-        private var Instance: AppDatabase? = null
+    companion object {
+        @Volatile // Memastikan variabel instance terlihat di semua thread
+        private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase{
-            return (Instance ?: synchronized(this){
-                Room.databaseBuilder(
+        // Fungsi untuk mendapatkan instance database
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java, // Class database
-                    "AppDatabase" // Nama Database
+                    AppDatabase::class.java,
+                    "AppDatabase" // Nama database
                 )
-                    .build().also { Instance = it }
-            })
+                    .fallbackToDestructiveMigration() // Hancurkan data saat migrasi versi
+                    .build()
+                INSTANCE = instance
+                instance
+            }
         }
     }
 }

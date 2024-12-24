@@ -15,8 +15,3 @@ data class MataKuliah(
     val dosenPengampu: String
 )
 
-enum class JenisMataKuliah {
-    WAJIB,
-    PILIHAN
-}
-

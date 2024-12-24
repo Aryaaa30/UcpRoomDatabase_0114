@@ -26,32 +26,41 @@ class CreateDosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewM
             jenisKelamin = if (event.jenisKelamin.isNotEmpty()) null else "Jenis Kelamin Tidak Boleh Kosong"
         )
         uiState = uiState.copy(isEntryValid = errorState)
+
+        println("Validation result: ${errorState.isValid()}") // Tambahkan log
         return errorState.isValid()
     }
 
-    fun saveData() {
-        val currentEvent = uiState.dosenEvent
+
+    fun saveData(onSuccess: () -> Unit) {
         if (validateFields()) {
             viewModelScope.launch {
                 try {
-                    repositoryDosen.insertDosen(currentEvent.toDosenEntity())
+                    repositoryDosen.insertDosen(uiState.dosenEvent.toDosenEntity())
+                    println("Data berhasil disimpan") // Tambahkan log
                     uiState = uiState.copy(
                         snackBarMessage = "Data Berhasil Disimpan",
-                        dosenEvent = DosenEvent(), // Reset input form
-                        isEntryValid = FormErrorStateDosen() // Reset error state
+                        dosenEvent = DosenEvent(),
+                        isEntryValid = FormErrorStateDosen()
                     )
+                    onSuccess() // Navigasi setelah sukses
                 } catch (e: Exception) {
+                    println("Gagal menyimpan data: ${e.message}") // Tambahkan log error
                     uiState = uiState.copy(
                         snackBarMessage = "Data Gagal Disimpan"
                     )
                 }
             }
         } else {
+            println("Validasi gagal. Tidak menyimpan data.") // Tambahkan log
             uiState = uiState.copy(
                 snackBarMessage = "Input Tidak Valid. Periksa Kembali Data Anda!!"
             )
         }
     }
+
+
+
 
     // Reset snackbar message
     fun resetSnackBarMessage() {

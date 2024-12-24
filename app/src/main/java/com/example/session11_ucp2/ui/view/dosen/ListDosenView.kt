@@ -32,7 +32,7 @@ import com.example.session11_ucp2.data.entity.Dosen
 @Composable
 fun ListDosenView(
     viewModel: ListDosenViewModel = viewModel(factory = PenyediaViewModel.Factory),
-    onAddDosenClick: () -> Unit
+    onAddDosenClick: () -> Unit,
 ) {
     val listDosen = viewModel.listDosen.collectAsState(initial = emptyList())
 
