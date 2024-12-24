@@ -15,7 +15,7 @@ import com.example.session11_ucp2.data.entity.MataKuliah
     version = 1, // Versi database
     exportSchema = false // Jangan ekspor skema
 )
-abstract class AppDatabase : RoomDatabase() {
+abstract class  AppDatabase : RoomDatabase() {
 
     // DAO untuk mengakses tabel Dosen
     abstract fun dosenDao(): DosenDao

@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 class CreateDosenViewModel(private val repositoryDosen: RepositoryDosen) : ViewModel(){
     var uiState by mutableStateOf(DosenUIState())
 
+
     fun updateState(dosenEvent: DosenEvent) {
         uiState = uiState.copy(
             dosenEvent = dosenEvent

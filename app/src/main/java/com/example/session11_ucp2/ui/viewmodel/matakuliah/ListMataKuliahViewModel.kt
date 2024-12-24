@@ -9,16 +9,28 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class ListMataKuliahViewModel(private val repository: RepositoryMataKuliah) : ViewModel() {
+class ListMataKuliahViewModel(
+    private val repositoryMataKuliah: RepositoryMataKuliah
+) : ViewModel() {
+    // State untuk menyimpan daftar mata kuliah
     private val _listMataKuliah = MutableStateFlow<List<MataKuliah>>(emptyList())
-    val listMataKuliah: StateFlow<List<MataKuliah>> = _listMataKuliah
+    val listMataKuliah: StateFlow<List<MataKuliah>> get() = _listMataKuliah
 
     init {
+        fetchListMataKuliah()
+    }
+
+    private fun fetchListMataKuliah() {
         viewModelScope.launch {
-            // Mengumpulkan data dari Flow dan menetapkannya ke _listMataKuliah
-            repository.getAllMataKuliah().collect { mataKuliahList ->
+            repositoryMataKuliah.getAllMataKuliah().collect { mataKuliahList ->
                 _listMataKuliah.value = mataKuliahList
             }
+        }
+    }
+
+    fun updateMataKuliah(mataKuliah: MataKuliah) {
+        viewModelScope.launch {
+            repositoryMataKuliah.updateMataKuliah(mataKuliah)
         }
     }
 }

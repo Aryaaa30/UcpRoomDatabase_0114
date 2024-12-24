@@ -42,7 +42,7 @@ object DestinasiCreateMataKuliah : AlamatNavigasi {
 @Composable
 fun CreateMataKuliahView(
     onBack: () -> Unit,
-    onNavigate: () -> Unit,
+    onNavigate: () -> Unit, // Navigasi ke halaman ListMataKuliah setelah sukses
     modifier: Modifier = Modifier,
     viewModel: CreateMataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -50,6 +50,7 @@ fun CreateMataKuliahView(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
+    // Memantau pesan Snackbar dari ViewModel
     LaunchedEffect(uiState.snackBarMessage) {
         uiState.snackBarMessage?.let { message ->
             coroutineScope.launch {
@@ -76,14 +77,11 @@ fun CreateMataKuliahView(
             )
             InsertBodyMataKuliah(
                 uiState = uiState,
-                onValueChange = { updatedEvent ->
-                    viewModel.updateState(updatedEvent)
-                },
+                onValueChange = { updatedEvent -> viewModel.updateState(updatedEvent) },
                 onClick = {
-                    coroutineScope.launch {
-                        viewModel.saveData()
-                    }
-                    onNavigate()
+                    viewModel.saveData(onSuccess = {
+                        onNavigate() // Navigasi ke halaman ListMataKuliah setelah sukses
+                    })
                 }
             )
         }
@@ -95,7 +93,7 @@ fun InsertBodyMataKuliah(
     modifier: Modifier = Modifier,
     onValueChange: (MataKuliahEvent) -> Unit,
     uiState: MataKuliahUIState,
-    onClick: () -> Unit
+    onClick: () -> Unit // Properti ini hanya akan menangani aksi simpan
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -109,7 +107,7 @@ fun InsertBodyMataKuliah(
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = onClick,
+            onClick = onClick, // Panggilan onClick langsung
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Simpan")
@@ -137,13 +135,16 @@ fun FormMataKuliah(
                 onValueChange(mataKuliahEvent.copy(kode = it))
             },
             label = { Text("Kode Mata Kuliah") },
-            isError = errorState.kode != null,
+            isError = errorState.kode != null, // Tampilkan error jika tidak valid
             placeholder = { Text("Masukkan Kode Mata Kuliah") },
         )
-        Text(
-            text = errorState.kode ?: "",
-            color = Color.Red
-        )
+        if (errorState.kode != null) {
+            Text(
+                text = errorState.kode,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // Nama
         OutlinedTextField(
@@ -156,27 +157,38 @@ fun FormMataKuliah(
             isError = errorState.nama != null,
             placeholder = { Text("Masukkan Nama Mata Kuliah") },
         )
-        Text(
-            text = errorState.nama ?: "",
-            color = Color.Red
-        )
+        if (errorState.nama != null) {
+            Text(
+                text = errorState.nama,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // SKS
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = mataKuliahEvent.sks.toString(),
             onValueChange = {
-                onValueChange(mataKuliahEvent.copy(sks = it.toIntOrNull() ?: 0))
+                val sksValue = it.toIntOrNull()
+                if (sksValue != null) {
+                    onValueChange(mataKuliahEvent.copy(sks = sksValue))
+                } else {
+                    onValueChange(mataKuliahEvent.copy(sks = 0)) // Atur default jika input tidak valid
+                }
             },
             label = { Text("SKS") },
             isError = errorState.sks != null,
             placeholder = { Text("Masukkan SKS") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Text(
-            text = errorState.sks ?: "",
-            color = Color.Red
-        )
+        if (errorState.sks != null) {
+            Text(
+                text = errorState.sks,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // Semester
         OutlinedTextField(
@@ -189,10 +201,13 @@ fun FormMataKuliah(
             isError = errorState.semester != null,
             placeholder = { Text("Masukkan Semester") },
         )
-        Text(
-            text = errorState.semester ?: "",
-            color = Color.Red
-        )
+        if (errorState.semester != null) {
+            Text(
+                text = errorState.semester,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // Jenis
         Spacer(modifier = Modifier.height(16.dp))
@@ -217,10 +232,13 @@ fun FormMataKuliah(
                 }
             }
         }
-        Text(
-            text = errorState.jenis ?: "",
-            color = Color.Red
-        )
+        if (errorState.jenis != null) {
+            Text(
+                text = errorState.jenis,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
 
         // Dosen Pengampu
         OutlinedTextField(
@@ -233,9 +251,12 @@ fun FormMataKuliah(
             isError = errorState.dosenPengampu != null,
             placeholder = { Text("Masukkan Dosen Pengampu") },
         )
-        Text(
-            text = errorState.dosenPengampu ?: "",
-            color = Color.Red
-        )
+        if (errorState.dosenPengampu != null) {
+            Text(
+                text = errorState.dosenPengampu,
+                color = Color.Red,
+                modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+            )
+        }
     }
 }

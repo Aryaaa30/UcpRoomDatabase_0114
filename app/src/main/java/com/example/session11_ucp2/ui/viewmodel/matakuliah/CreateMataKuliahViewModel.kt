@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.session11_ucp2.data.entity.MataKuliah
 import com.example.session11_ucp2.repository.RepositoryMataKuliah
+import com.example.session11_ucp2.ui.viewmodel.dosen.DosenEvent
+import com.example.session11_ucp2.ui.viewmodel.dosen.FormErrorStateDosen
+import com.example.session11_ucp2.ui.viewmodel.dosen.toDosenEntity
 import kotlinx.coroutines.launch
 
 class CreateMataKuliahViewModel(private val repositoryMataKuliah: RepositoryMataKuliah) : ViewModel() {
@@ -32,24 +35,27 @@ class CreateMataKuliahViewModel(private val repositoryMataKuliah: RepositoryMata
         return errorState.isValid()
     }
 
-    fun saveData() {
-        val currentEvent = uiState.mataKuliahEvent
+    fun saveData(onSuccess: () -> Unit) {
         if (validateFields()) {
             viewModelScope.launch {
                 try {
-                    repositoryMataKuliah.insertMataKuliah(currentEvent.toMataKuliahEntity())
+                    repositoryMataKuliah.insertMataKuliah(uiState.mataKuliahEvent.toMataKuliahEntity())
+                    println("Data berhasil disimpan") // Tambahkan log
                     uiState = uiState.copy(
                         snackBarMessage = "Data Berhasil Disimpan",
-                        mataKuliahEvent = MataKuliahEvent(), // Reset input form
-                        isEntryValid = FormErrorStateMataKuliah() // Reset error state
+                        mataKuliahEvent = MataKuliahEvent(),
+                        isEntryValid = FormErrorStateMataKuliah()
                     )
+                    onSuccess() // Navigasi setelah sukses
                 } catch (e: Exception) {
+                    println("Gagal menyimpan data: ${e.message}") // Tambahkan log error
                     uiState = uiState.copy(
                         snackBarMessage = "Data Gagal Disimpan"
                     )
                 }
             }
         } else {
+            println("Validasi gagal. Tidak menyimpan data.") // Tambahkan log
             uiState = uiState.copy(
                 snackBarMessage = "Input Tidak Valid. Periksa Kembali Data Anda!!"
             )

@@ -15,65 +15,87 @@ import com.example.session11_ucp2.ui.view.matakuliah.CreateMataKuliahView
 import com.example.session11_ucp2.ui.view.matakuliah.DetailMataKuliahView
 import com.example.session11_ucp2.ui.view.matakuliah.UpdateMataKuliahView
 
-@Composable
+enum class Routes(val route: String) {
+    HOME("home"),
+    CREATE_DOSEN("create_dosen"),
+    LIST_DOSEN("list_dosen"),
+    CREATE_MATAKULIAH("create_matakuliah"),
+    DETAIL_MATAKULIAH("detail_mata_kuliah/{kodeMataKuliah}"),
+    EDIT_MATAKULIAH("edit_mata_kuliah/{kodeMataKuliah}");
+
+    fun withArgs(vararg args: String): String {
+        var updatedRoute = route
+        args.forEachIndexed { index, arg ->
+            updatedRoute = updatedRoute.replaceFirst("{${index}}", arg)
+        }
+        return updatedRoute
+    }
+}
+
+
+
+    @Composable
 fun PengelolaHalaman(
     navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
-        startDestination = DestinasiHome.route // Start dari halaman utama
+        startDestination = Routes.HOME.route
     ) {
         // MenuView
-        composable(route = DestinasiHome.route) {
+        composable(route = Routes.HOME.route) {
             MenuView(
                 onDosenClick = {
-                    navController.navigate(DestinasiCreateDosen.route)
+                    navController.navigate(Routes.CREATE_DOSEN.route)
                 },
                 onMataKuliahClick = {
-                    navController.navigate(DestinasiCreateMataKuliah.route)
+                    navController.navigate(Routes.CREATE_MATAKULIAH.route)
                 }
             )
         }
 
-        composable(route = DestinasiListDosen.route) {
+        // ListDosenView
+        composable(route = Routes.LIST_DOSEN.route) {
             ListDosenView(
-                onAddDosenClick = { navController.navigate(DestinasiCreateDosen.route) }
+                onAddDosenClick = { navController.navigate(Routes.CREATE_DOSEN.route) }
             )
         }
-        composable(route = DestinasiCreateDosen.route) {
+
+        // CreateDosenView
+        composable(route = Routes.CREATE_DOSEN.route) {
             CreateDosenView(
                 onBack = { navController.popBackStack() },
-                onNavigate = { navController.navigate(DestinasiListDosen.route) }
+                onNavigate = { navController.navigate(Routes.LIST_DOSEN.route) }
             )
         }
 
         // CreateMataKuliahView
-        composable(route = DestinasiCreateMataKuliah.route) {
+        composable(route = Routes.CREATE_MATAKULIAH.route) {
             CreateMataKuliahView(
                 onBack = { navController.popBackStack() },
-                onNavigate = {
-                    navController.popBackStack()
-                }
+                onNavigate = { navController.popBackStack() }
             )
         }
 
         // DetailMataKuliahView
         composable(
-            route = DestinasiDetailMataKuliah.route,
+            route = Routes.DETAIL_MATAKULIAH.route,
             arguments = listOf(
-                navArgument(DestinasiDetailMataKuliah.KODE_MATA_KULIAH) {
+                navArgument("kodeMataKuliah") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val kodeMataKuliah =
-                backStackEntry.arguments?.getString(DestinasiDetailMataKuliah.KODE_MATA_KULIAH)
+            val kodeMataKuliah = backStackEntry.arguments?.getString("kodeMataKuliah")
             kodeMataKuliah?.let { kode ->
                 DetailMataKuliahView(
                     onBack = { navController.popBackStack() },
                     onEditClick = {
-                        navController.navigate(DestinasiEdit.routeWithArgs(kode))
+                        if (kode.isNotEmpty()){
+                            navController.navigate(Routes.EDIT_MATAKULIAH.withArgs(kode))
+                        }else {
+                            println("Kode Mata Kuliah kosong, navigasi dibatalkan.")}
                     },
                     onDeleteClick = {
                         navController.popBackStack()
@@ -84,15 +106,14 @@ fun PengelolaHalaman(
 
         // UpdateMataKuliahView
         composable(
-            route = DestinasiEdit.route,
+            route = Routes.EDIT_MATAKULIAH.route,
             arguments = listOf(
-                navArgument(DestinasiEdit.KODE_MATA_KULIAH) {
+                navArgument("kodeMataKuliah") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
-            val kodeMataKuliah =
-                backStackEntry.arguments?.getString(DestinasiEdit.KODE_MATA_KULIAH)
+            val kodeMataKuliah = backStackEntry.arguments?.getString("kodeMataKuliah")
             kodeMataKuliah?.let { kode ->
                 UpdateMataKuliahView(
                     onBack = { navController.popBackStack() },
@@ -102,3 +123,6 @@ fun PengelolaHalaman(
         }
     }
 }
+
+
+
