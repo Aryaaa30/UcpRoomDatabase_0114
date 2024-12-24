@@ -58,7 +58,8 @@ fun PengelolaHalaman(
         // ListDosenView
         composable(route = Routes.LIST_DOSEN.route) {
             ListDosenView(
-                onAddDosenClick = { navController.navigate(Routes.CREATE_DOSEN.route) }
+                onAddDosenClick = { navController.navigate(Routes.CREATE_DOSEN.route) },
+                onBackClick = { navController.popBackStack() }
             )
         }
 
@@ -87,22 +88,29 @@ fun PengelolaHalaman(
                 }
             )
         ) { backStackEntry ->
+            // Ambil argument dari backStackEntry
             val kodeMataKuliah = backStackEntry.arguments?.getString("kodeMataKuliah")
-            kodeMataKuliah?.let { kode ->
+
+            // Periksa apakah kodeMataKuliah ada atau kosong
+            if (kodeMataKuliah.isNullOrEmpty()) {
+                // Jika argument tidak valid, navigasikan kembali
+                navController.popBackStack()
+            } else {
                 DetailMataKuliahView(
+                    kodeMataKuliah = kodeMataKuliah, // Berikan argument ke DetailMataKuliahView
                     onBack = { navController.popBackStack() },
                     onEditClick = {
-                        if (kode.isNotEmpty()){
-                            navController.navigate(Routes.EDIT_MATAKULIAH.withArgs(kode))
-                        }else {
-                            println("Kode Mata Kuliah kosong, navigasi dibatalkan.")}
+                        // Navigasi ke halaman edit mata kuliah dengan argument
+                        navController.navigate(Routes.EDIT_MATAKULIAH.withArgs(kodeMataKuliah))
                     },
                     onDeleteClick = {
+                        // Lakukan operasi delete dan kembali ke halaman sebelumnya
                         navController.popBackStack()
                     }
                 )
             }
         }
+
 
         // UpdateMataKuliahView
         composable(

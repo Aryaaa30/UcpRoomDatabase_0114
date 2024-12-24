@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class ListMataKuliahViewModel(
     private val repositoryMataKuliah: RepositoryMataKuliah
 ) : ViewModel() {
-    // State untuk menyimpan daftar mata kuliah
+    // State untuk daftar mata kuliah
     private val _listMataKuliah = MutableStateFlow<List<MataKuliah>>(emptyList())
     val listMataKuliah: StateFlow<List<MataKuliah>> get() = _listMataKuliah
 
@@ -22,15 +22,10 @@ class ListMataKuliahViewModel(
 
     private fun fetchListMataKuliah() {
         viewModelScope.launch {
-            repositoryMataKuliah.getAllMataKuliah().collect { mataKuliahList ->
-                _listMataKuliah.value = mataKuliahList
-            }
-        }
-    }
-
-    fun updateMataKuliah(mataKuliah: MataKuliah) {
-        viewModelScope.launch {
-            repositoryMataKuliah.updateMataKuliah(mataKuliah)
+            repositoryMataKuliah.getAllMataKuliah() // Ambil Flow<List<MataKuliah>> dari repository
+                .collect { data ->
+                    _listMataKuliah.value = data // Perbarui state dengan data dari repository
+                }
         }
     }
 }

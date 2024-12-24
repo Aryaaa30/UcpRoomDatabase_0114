@@ -23,6 +23,7 @@ import com.example.session11_ucp2.ui.viewmodel.matakuliah.toMataKuliahEntity
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailMataKuliahView(
+    kodeMataKuliah: String,
     modifier: Modifier = Modifier,
     viewModel: DetailMataKuliahViewModel = viewModel(),
     onBack: () -> Unit = { },

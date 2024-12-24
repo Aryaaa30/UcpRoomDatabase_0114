@@ -3,11 +3,15 @@ package com.example.session11_ucp2.ui.view.matakuliah
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.session11_ucp2.data.entity.MataKuliah
@@ -18,7 +22,8 @@ import com.example.session11_ucp2.ui.viewmodel.dosen.PenyediaViewModel
 @Composable
 fun ListMataKuliahView(
     viewModel: ListMataKuliahViewModel = viewModel(factory = PenyediaViewModel.Factory),
-    onAddMataKuliahClick: () -> Unit
+    onAddMataKuliahClick: () -> Unit,
+    onBackClick: () -> Unit // Menambahkan navigasi tombol kembali
 ) {
     // Observasi state untuk daftar mata kuliah
     val listMataKuliah = viewModel.listMataKuliah.collectAsState(initial = emptyList())
@@ -26,12 +31,30 @@ fun ListMataKuliahView(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Home Mata Kuliah") },
+                title = {
+                    Text(
+                        text = "Home Mata Kuliah",
+                        modifier = Modifier.fillMaxWidth(), // Membuat teks mengisi lebar penuh
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center // Meratakan teks di tengah
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) { // Tombol kembali
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { onAddMataKuliahClick() }) {
-                Text("+")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Mata Kuliah"
+                )
             }
         }
     ) { paddingValues ->
